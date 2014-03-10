@@ -45,6 +45,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    rake (10.1.1)
     redis (3.0.7)
     ripl (0.7.0)
       bond (~> 0.4.2)
@@ -89,6 +90,7 @@ DEPENDENCIES
   foreman
   oauth2 (~> 0.9.3)
   pg
+  rake
   redis (~> 3.0.7)
   sinatra (~> 1.4.4)
   sinatra-activerecord

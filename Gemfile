@@ -12,6 +12,7 @@ gem "sinatra-activerecord"
 gem 'sinatra-flash'
 gem 'sinatra-redirect-with-flash'
 gem 'twilio-ruby'
+gem 'rake'
 
 group :development do
   gem 'sqlite3'
