@@ -19,6 +19,10 @@ def new_twilio_client
   return Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
 end
 
+class User < ActiveRecord::Base
+  validates_presence_of :school_id
+end
+
 class DoorbotApp < Sinatra::Base
   register Sinatra::ActiveRecordExtension
 
@@ -28,15 +32,10 @@ class DoorbotApp < Sinatra::Base
 
   get '/' do
     if logged_in?
-      erb :unlock
+      erb :unlock, locals: {user_number: current_user.phone}
     else
       "<a href='/login'>Login</a>"
     end
-  end
-
-  get '/test' do
-    client = new_twilio_client
-    client.accounts.get(ENV['TWILIO_SID']).inspect
   end
 
   get '/login' do
@@ -51,10 +50,23 @@ class DoorbotApp < Sinatra::Base
     twiml.text
   end
 
+  post '/update_user' do
+    if params[:phone] && logged_in?
+      user = current_user
+      user.phone = params[:phone]
+      user.save
+    end
+    redirect to('/')
+  end
+
   get '/oauth_callback' do
     client = new_oauth_client
     token = client.auth_code.get_token(params[:code], :redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
-    session[:user] = JSON.parse(token.get('/api/v1/people/me.json').body)['id']
+    school_id = JSON.parse(token.get('/api/v1/people/me.json').body)['id']
+    session[:user] = school_id
+    unless User.where(school_id: school_id).exists?
+      User.create(school_id: school_id)
+    end
     redirect to('/')
   end
 
@@ -71,6 +83,12 @@ class DoorbotApp < Sinatra::Base
 
   def logged_in?
     ! session[:user].nil?
+  end
+
+  def current_user
+    unless session[:user].nil?
+      User.where(school_id: session[:user]).first
+    end
   end
 end
 
