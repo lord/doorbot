@@ -11,6 +11,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+set_secrets.sh
 
 # YARD artifacts
 .yardoc
