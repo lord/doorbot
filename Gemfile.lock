@@ -75,6 +75,10 @@ GEM
       ripl-multi_line (>= 0.2.4)
       ripl-rack (>= 0.2.0)
       sinatra (>= 1.2.1)
+    twilio-ruby (3.11.5)
+      builder (>= 2.1.2)
+      jwt (>= 0.1.2)
+      multi_json (>= 1.3.0)
     tzinfo (0.3.38)
 
 PLATFORMS
@@ -92,3 +96,4 @@ DEPENDENCIES
   sinatra-redirect-with-flash
   sqlite3
   tux
+  twilio-ruby
