@@ -5,7 +5,7 @@ require 'oauth2'
 require 'net/http'
 require 'twilio-ruby'
 
-$counter = 500
+$counter = 0
 
 def new_oauth_client
   OAuth2::Client.new(
@@ -78,7 +78,13 @@ class DoorbotApp < Sinatra::Base
     hash = Digest::SHA2.new << ("%09d" % counter) + 'tuehnoschhrs189072398nthna'
     uri = URI("http://10.0.3.240/#{"%09d" % counter}/#{hash}")
     res = Net::HTTP.post_form(uri, {})
-    res.body
+    if res.code == '400'
+      $counter = res['next-nounce'].to_i
+      status, headers, body = call env.merge("PATH_INFO" => '/unlock')
+      [status, headers, body.map(&:upcase)]
+    else
+      redirect to('/')
+    end
   end
 
   def logged_in?
