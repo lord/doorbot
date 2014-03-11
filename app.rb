@@ -46,13 +46,6 @@ class DoorbotApp < Sinatra::Base
     redirect client.auth_code.authorize_url(:redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
   end
 
-  post '/twilio_callback' do
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Message "Hi, your number is #{params[:From]}"
-    end
-    twiml.text
-  end
-
   post '/update_user' do
     if params[:phone] && logged_in?
       user = current_user
