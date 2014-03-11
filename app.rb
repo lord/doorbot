@@ -4,6 +4,7 @@ require 'json'
 require 'oauth2'
 require 'net/http'
 require 'twilio-ruby'
+require 'rack/csrf'
 
 def new_oauth_client
   OAuth2::Client.new(
@@ -31,6 +32,17 @@ class DoorbotApp < Sinatra::Base
 
   configure do
     enable :sessions
+    use Rack::Csrf, :raise => true
+  end
+
+  helpers do
+    def csrf_token
+      Rack::Csrf.csrf_token(env)
+    end
+
+    def csrf_tag
+      Rack::Csrf.csrf_tag(env)
+    end
   end
 
   get '/' do

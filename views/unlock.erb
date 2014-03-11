@@ -2,10 +2,12 @@
   <body>
     <h1>Unlock the Door Now</h1>
     <form action="/unlock" method="POST">
+      <%= csrf_tag %>
       <input type="submit" value="Unlock">
     </form>
     <h1>Update Your Phone Number</h1>
     <form action="/update_user" method="POST">
+      <%= csrf_tag %>
       <input type="phone" name="phone" value="<%= user_number %>">
       <input type="submit" value="Update">
       <p>Enter your phone number with the form <code>+15193837273</code></p>
