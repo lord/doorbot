@@ -8,6 +8,8 @@
     <form action="/update_user" method="POST">
       <input type="phone" name="phone" value="<%= user_number %>">
       <input type="submit" value="Update">
+      <p>Enter your phone number with the form <code>+15193837273</code></p>
+      <p>Text '<%= ENV['PASSWORD_HUMAN'] %>' to <%= ENV['TWILIO_PHONE_NUMBER'] %> to unlock</p>
     </form>
   </body>
 </html>

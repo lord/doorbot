@@ -5,8 +5,6 @@ require 'oauth2'
 require 'net/http'
 require 'twilio-ruby'
 
-$counter = 0
-
 def new_oauth_client
   OAuth2::Client.new(
     ENV['HS_OAUTH_ID'],
@@ -17,6 +15,11 @@ end
 
 def new_twilio_client
   return Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+end
+
+def unlock
+  uri = URI("http://10.0.3.240/opendoor")
+  Net::HTTP.post_form(uri, {})
 end
 
 class User < ActiveRecord::Base
@@ -73,18 +76,8 @@ class DoorbotApp < Sinatra::Base
   post '/unlock' do
     halt "Please <a href='/login'>login</a>." unless logged_in?
 
-    $counter += 1
-    counter = $counter # in case of multi-threading
-    hash = Digest::SHA2.new << ("%09d" % counter) + 'tuehnoschhrs189072398nthna'
-    uri = URI("http://10.0.3.240/#{"%09d" % counter}/#{hash}")
-    res = Net::HTTP.post_form(uri, {})
-    if res.code == '400'
-      $counter = res['next-nounce'].to_i
-      status, headers, body = call env.merge("PATH_INFO" => '/unlock')
-      [status, headers, body.map(&:upcase)]
-    else
-      redirect to('/')
-    end
+    unlock
+    redirect to('/')
   end
 
   def logged_in?
