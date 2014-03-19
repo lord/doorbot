@@ -6,6 +6,8 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 
+$counter = 0
+
 def new_oauth_client
   OAuth2::Client.new(
     ENV['HS_OAUTH_ID'],
@@ -18,9 +20,18 @@ def new_twilio_client
   return Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
 end
 
-def unlock
-  uri = URI("http://10.0.3.240/opendoor")
-  Net::HTTP.post_form(uri, {})
+def unlock(already=false)
+  $counter += 1
+  counter = $counter # in case of multi-threading
+  hash = Digest::SHA2.new << ("%09d" % counter) + ENV['HASH_SECRET']
+  uri = URI("http://10.0.3.240/#{"%09d" % counter}/#{hash}")
+  res = Net::HTTP.post_form(uri, {})
+  if res.code == '400' && already == false
+    $counter = res['next-nounce'].to_i
+    unlock(true)
+  else
+    redirect to('/')
+  end
 end
 
 class User < ActiveRecord::Base
