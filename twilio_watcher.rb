@@ -10,7 +10,14 @@ while true
     if sms.from != '+17864225374' # ignore outgoing texts
       if User.where(phone: sms.from).exists? and sms.body.downcase.strip =~ Regexp.new(ENV['PASSWORD_REGEX'])
         puts "Unlock!"
-        unlock
+        begin
+          unlock
+        rescue Errno::ETIMEDOUT
+          puts "Timeout rescue"
+        rescue Errno::ECONNRESET
+          puts "Reset rescue"
+        end
+        break # ignore all other unlock requests, since we just unlocked the door
       else
         puts "Fail"
       end
