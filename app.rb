@@ -98,10 +98,6 @@ class DoorbotApp < Sinatra::Base
     redirect client.auth_code.authorize_url(:redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
   end
 
-  get '/screen.css' do
-    scss :screen
-  end
-
   post '/update_user' do
     if params[:phone] && logged_in?
       user = current_user
