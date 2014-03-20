@@ -14,6 +14,8 @@ gem 'rake'
 gem 'rack_csrf'
 gem 'sass'
 
+gem 'phone' # phone number parsing
+
 group :development do
   gem 'sqlite3'
   gem 'tux'

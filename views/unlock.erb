@@ -27,13 +27,13 @@
         </div>
       </div>
     </div>
-    <div class="modal hidden" id="phone-modal">
+    <div class="modal<%= " visible" if user_number.nil? %>" id="phone-modal">
       <div class="page">
         <div>
           <form class="modal-window" action="/update_user" method="POST">
             <p>Doorbot checks phone numbers of incoming text messages to make sure they come from Hacker Schoolers. Please make sure your number below is accurate to unlock to door via text.</p>
             <%= csrf_tag %>
-            <input type="phone" class="nice-text" name="phone" value="<%= user_number %>">
+            <input type="phone" class="nice-text" name="phone" placeholder="Your phone number" value="<%= user_number %>">
             <input type="submit" class="nice-button" value="Save Phone Number">
           </form>
         </div>

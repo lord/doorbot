@@ -5,6 +5,7 @@ require 'oauth2'
 require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
+require 'phone'
 
 $counter = 0
 
@@ -40,9 +41,19 @@ def unlock(already=false)
   elsif res.code == '400' && already == true
     set_alert 'Failed to unlock the door, internal auth error.', 'fail'
   else
-    set_alert 'Door unlocked.', 'success'
+    set_alert 'Door unlocked!', 'success'
   end
 end
+
+def parse_phone_number(num)
+  begin
+    Phoner::Phone.default_country_code = '1'
+    Phoner::Phone.parse(num).to_s
+  rescue Phoner::PhoneError
+    false
+  end
+end
+
 
 class User < ActiveRecord::Base
   validates_presence_of :school_id
@@ -94,8 +105,14 @@ class DoorbotApp < Sinatra::Base
   post '/update_user' do
     if params[:phone] && logged_in?
       user = current_user
-      user.phone = params[:phone]
-      user.save
+      phone = parse_phone_number(params[:phone])
+      if phone
+        set_alert 'Phone number updated.', 'success'
+        user.phone = phone
+        user.save
+      else
+        set_alert 'Invalid or missing phone number.', 'fail'
+      end
     end
     redirect to('/')
   end
@@ -103,7 +120,8 @@ class DoorbotApp < Sinatra::Base
   get '/oauth_callback' do
     client = new_oauth_client
     token = client.auth_code.get_token(params[:code], :redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
-    school_id = JSON.parse(token.get('/api/v1/people/me.json').body)['id']
+    json = JSON.parse(token.get('/api/v1/people/me.json').body)
+    school_id = json['id']
     session[:user] = school_id
     unless User.where(school_id: school_id).exists?
       User.create(school_id: school_id)
