@@ -1,17 +1,43 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="/screen.css">
+    <script>
+      function showPhoneModal() {
+        document.getElementById('phone-modal').className = "modal visible";
+      }
+    </script>
+  </head>
   <body>
-    <h1>Unlock the Door Now</h1>
-    <form action="/unlock" method="POST">
-      <%= csrf_tag %>
-      <input type="submit" value="Unlock">
-    </form>
-    <h1>Update Your Phone Number</h1>
-    <form action="/update_user" method="POST">
-      <%= csrf_tag %>
-      <input type="phone" name="phone" value="<%= user_number %>">
-      <input type="submit" value="Update">
-      <p>Enter your phone number with the form <code>+15193837273</code></p>
-      <p>Text '<%= ENV['PASSWORD_HUMAN'] %>' to <%= ENV['TWILIO_PHONE_NUMBER'] %> to unlock</p>
-    </form>
+    <% if alert_msg %>
+      <div class="alert <%= alert_type %>"><%= alert_msg %></div>
+    <% end %>
+    <div class="page">
+      <div>
+        <img src="/doorbot.png" alt="Doorbot Logo" class="logo">
+        <h1>Welcome!</h1>
+        <div class="highlight-box">
+          <form action="/unlock" method="POST">
+            <%= csrf_tag %>
+            <input type="submit" class="nice-button" value="Unlock the Front Door">
+          </form>
+          <p>You can also text "<%= ENV['PASSWORD_HUMAN'] %>" to <%= ENV['TWILIO_PHONE_NUMBER'] %>. The text must come from your phone number, which we have registered as <%= user_number %>.</p>
+        </div>
+        <div class="footer">
+          <a href="#" onclick="showPhoneModal();">Update phone number</a> | <a href="/logout">Sign Out</a>
+        </div>
+      </div>
+    </div>
+    <div class="modal hidden" id="phone-modal">
+      <div class="page">
+        <div>
+          <form class="modal-window" action="/update_user" method="POST">
+            <p>Doorbot checks phone numbers of incoming text messages to make sure they come from Hacker Schoolers. Please make sure your number below is accurate to unlock to door via text.</p>
+            <%= csrf_tag %>
+            <input type="phone" class="nice-text" name="phone" value="<%= user_number %>">
+            <input type="submit" class="nice-button" value="Save Phone Number">
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

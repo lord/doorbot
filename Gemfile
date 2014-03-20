@@ -9,11 +9,10 @@ gem 'oauth2', '~> 0.9.3'
 # For PG database
 gem "activerecord"
 gem "sinatra-activerecord"
-gem 'sinatra-flash'
-gem 'sinatra-redirect-with-flash'
 gem 'twilio-ruby'
 gem 'rake'
 gem 'rack_csrf'
+gem 'sass'
 
 group :development do
   gem 'sqlite3'

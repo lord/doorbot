@@ -20,17 +20,27 @@ def new_twilio_client
   return Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
 end
 
+def set_alert(msg, type)
+  if defined? session
+    session[:msg] = msg
+    session[:type] = type
+  end
+end
+
 def unlock(already=false)
   $counter += 1
   counter = $counter # in case of multi-threading
   hash = Digest::SHA2.new << ("%09d" % counter) + ENV['HASH_SECRET']
-  uri = URI("http://10.0.3.240/#{"%09d" % counter}/#{hash}")
-  res = Net::HTTP.post_form(uri, {})
+  uri = "/#{"%09d" % counter}/#{hash}"
+  http = Net::HTTP.start '10.0.3.240'
+  res = http.post(uri, '')
   if res.code == '400' && already == false
     $counter = res['next-nounce'].to_i
     unlock(true)
+  elsif res.code == '400' && already == true
+    set_alert 'Failed to unlock the door, internal auth error.', 'fail'
   else
-    redirect to('/')
+    set_alert 'Door unlocked.', 'success'
   end
 end
 
@@ -57,16 +67,28 @@ class DoorbotApp < Sinatra::Base
   end
 
   get '/' do
-    if logged_in?
-      erb :unlock, locals: {user_number: current_user.phone}
+    if session[:msg]
+      alert_msg = session[:msg]
+      alert_type = session[:type] || 'success'
+      session[:msg] = nil
     else
-      "<a href='/login'>Login</a>"
+      alert_msg = nil
+      alert_type = nil
+    end
+    if logged_in?
+      erb :unlock, locals: {user_number: current_user.phone, alert_msg: alert_msg, alert_type: alert_type}
+    else
+      erb :lock, locals: {alert_msg: alert_msg, alert_type: alert_type}
     end
   end
 
-  get '/login' do
+  post '/login' do
     client = new_oauth_client
     redirect client.auth_code.authorize_url(:redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
+  end
+
+  get '/screen.css' do
+    scss :screen
   end
 
   post '/update_user' do
@@ -86,6 +108,11 @@ class DoorbotApp < Sinatra::Base
     unless User.where(school_id: school_id).exists?
       User.create(school_id: school_id)
     end
+    redirect to('/')
+  end
+
+  get '/logout' do
+    session[:user] = nil
     redirect to('/')
   end
 
