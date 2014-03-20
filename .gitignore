@@ -13,6 +13,7 @@ test/version_tmp
 tmp
 set_secrets.sh
 *.db
+.sass-cache
 
 # YARD artifacts
 .yardoc
