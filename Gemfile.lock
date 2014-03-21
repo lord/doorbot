@@ -58,7 +58,6 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
-    sass (3.2.14)
     sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -94,7 +93,6 @@ DEPENDENCIES
   rack_csrf
   rake
   redis (~> 3.0.7)
-  sass
   sinatra (~> 1.4.4)
   sinatra-activerecord
   sqlite3
