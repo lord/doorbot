@@ -20,6 +20,8 @@ export TWILIO_PHONE_NUMBER="human readable phone number"
 
 export PASSWORD_REGEX="random string"
 export PASSWORD_HUMAN="random string"
+
+export HASH_SECRET="random string shared with doorduino"
 ```
 
 Doorbot is designed to work behind firewalls, which is why it uses Twilio polling instead of callbacks. However, there's no reason you couldn't run it on a Heroku instance or something.
