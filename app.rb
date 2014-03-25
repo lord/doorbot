@@ -116,7 +116,7 @@ class DoorbotApp < Sinatra::Base
   get '/oauth_callback' do
     client = new_oauth_client
     token = client.auth_code.get_token(params[:code], :redirect_uri => "#{ENV['HS_OAUTH_CALLBACK']}/oauth_callback")
-    json = JSON.parse(token.get('/api/v1/people/me.json').body)
+    json = JSON.parse(token.get('/api/v1/people/me').body)
     school_id = json['id']
     session[:user] = school_id
     unless User.where(school_id: school_id).exists?
