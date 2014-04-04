@@ -15,12 +15,6 @@ gem 'rack_csrf'
 
 gem 'phone' # phone number parsing
 
-group :development do
-  gem 'sqlite3'
-  gem 'tux'
-  gem 'foreman'
-end
-
-group :production do
-  gem 'pg'
-end
+gem 'sqlite3'
+gem 'tux'
+gem 'foreman'
