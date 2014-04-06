@@ -64,6 +64,7 @@ class DoorbotApp < Sinatra::Base
 
   configure do
     enable :sessions
+    set :database, 'sqlite:///development.db'
     use Rack::Csrf, :raise => true
   end
 
@@ -147,5 +148,3 @@ class DoorbotApp < Sinatra::Base
     end
   end
 end
-
-require './config/environments'
