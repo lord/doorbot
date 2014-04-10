@@ -1,6 +1,8 @@
 doorbot
 =======
 
+For context, see [the blog post about the whole setup](http://lord.io/blog/2014/unlocking-hacker-school/).
+
 Doorbot is a web server that manages access to Hacker School's door. It connects to a [doorduino](https://github.com/jdotjdot/DoorDuino) to unlock the door when a certain number is texted.
 
 ## Installation
