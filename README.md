@@ -5,6 +5,8 @@ For context, see [the blog post about the whole setup](http://lord.io/blog/2014/
 
 Doorbot is a web server that manages access to Hacker School's door. It connects to a [doorduino](https://github.com/jdotjdot/DoorDuino) to unlock the door when a certain number is texted.
 
+Built by me and [J.J](http://blog.jdotjdot.com/) during Hacker School winter 2014. Also, shout out to Amy's [buzzerbot9000](https://github.com/imightbeamy/buzzerbot9000) for the idea.
+
 ## Installation
 
 You'll need to `bundle install`, and then `foreman start` to start both the Twilio watcher and the web server.
