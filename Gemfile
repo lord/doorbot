@@ -12,6 +12,7 @@ gem "sinatra-activerecord"
 gem 'twilio-ruby'
 gem 'rake'
 gem 'rack_csrf'
+gem 'pi_piper'
 
 gem 'phone' # phone number parsing
 

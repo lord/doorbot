@@ -6,8 +6,9 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
-
-$counter = 0
+require 'pi_piper'
+require './unlocker'
+require './twilio_watcher'
 
 def new_oauth_client
   OAuth2::Client.new(
@@ -29,19 +30,10 @@ def set_alert(msg, type)
 end
 
 def unlock(already=false)
-  $counter += 1
-  counter = $counter # in case of multi-threading
-  hash = Digest::SHA2.new << ("%09d" % counter) + ENV['HASH_SECRET']
-  uri = "/#{"%09d" % counter}/#{hash}"
-  http = Net::HTTP.start '10.0.3.240'
-  res = http.post(uri, '')
-  if res.code == '400' && already == false
-    $counter = res['next-nounce'].to_i
-    unlock(true)
-  elsif res.code == '400' && already == true
-    set_alert 'Failed to unlock the door, internal auth error.', 'fail'
-  else
+  if $unlocker.unlock
     set_alert 'Door unlocked!', 'success'
+  else
+    set_alert 'Door was already unlocked. Please wait before trying again.', 'fail'
   end
 end
 
@@ -66,6 +58,8 @@ class DoorbotApp < Sinatra::Base
     enable :sessions
     set :database, 'sqlite:///development.db'
     use Rack::Csrf, :raise => true
+    $unlocker = Unlocker.new
+    TwilioWatcher.new($unlocker)
   end
 
   helpers do

@@ -20,7 +20,7 @@
             <%= csrf_tag %>
             <input type="submit" class="nice-button" value="Unlock the Front Door">
           </form>
-          <p>You can also text "<%= ENV['PASSWORD_HUMAN'] %>" to <%= ENV['TWILIO_PHONE_NUMBER'] %>. The text must come from your phone number, which we have registered as <%= user_number %>.</p>
+          <p>You can also text "<%= ENV['PASSWORD_HUMAN'] %>" to <%= ENV['TWILIO_PHONE_NUMBER_HUMAN'] %>. The text must come from your phone number, which we have registered as <%= user_number %>.</p>
         </div>
         <div class="footer">
           <a href="#" onclick="showPhoneModal();">Update phone number</a> | <a href="/logout">Sign Out</a>
