@@ -16,9 +16,14 @@ class ZulipWatcher
     @client.stream_messages do |message|
       next if message.sender_email == ENV['ZULIP_USERNAME'] # Skip our own messages
 
-      if message.type == 'private' && message.content.downcase =~ /unlock/
-        @unlocker.unlock
-        @client.send_private_message("Door unlocked!", message.sender_email)
+      if message.type == 'private'
+        msg = message.content.downcase
+        if msg =~ /unlock/
+          @unlocker.unlock
+          @client.send_private_message("Door unlocked!", message.sender_email)
+        elsif msg =~ /help/
+          @client.send_private_message("I have a couple of commands! Say `unlock` to unlock, and `help` to show this help message", message.sender_email)
+        end
       elsif ['test-bot', '455 Broadway'].include?(message.stream) && message.content.downcase =~ /doorbot[,. ]+unlock/
         @unlocker.unlock
         @client.send_message(message.subject, "Door unlocked!", message.stream)
