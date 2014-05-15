@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310211550) do
+ActiveRecord::Schema.define(version: 20140515193357) do
 
   create_table "users", force: true do |t|
     t.string   "phone"
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "zulip_email"
   end
 
 end
