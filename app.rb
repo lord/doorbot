@@ -6,7 +6,7 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
-require './lib/unlocker_stub'
+require './lib/unlocker'
 require './lib/twilio_watcher'
 require './lib/zulip_watcher'
 
