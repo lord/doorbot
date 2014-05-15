@@ -6,9 +6,9 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
-require 'pi_piper'
 require './unlocker'
 require './twilio_watcher'
+require './zulip_watcher'
 
 def new_oauth_client
   OAuth2::Client.new(
@@ -60,6 +60,7 @@ class DoorbotApp < Sinatra::Base
     use Rack::Csrf, :raise => true
     $unlocker = Unlocker.new
     TwilioWatcher.new($unlocker)
+    ZulipWatcher.new($unlocker)
   end
 
   helpers do

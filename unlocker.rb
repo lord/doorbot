@@ -1,3 +1,5 @@
+require 'pi_piper'
+
 class Unlocker
   def initialize
     @timer = 0

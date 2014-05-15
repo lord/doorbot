@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/lord/zulip-rb.git
+  revision: 2cceda6331cef75e635ae86fe3f24827bea0dbd7
+  specs:
+    zulip (0.0.2)
+      faraday (~> 0.9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -100,3 +107,4 @@ DEPENDENCIES
   sqlite3
   tux
   twilio-ruby
+  zulip!
