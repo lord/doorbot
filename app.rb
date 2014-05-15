@@ -6,9 +6,9 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
-require './unlocker_stub'
-require './twilio_watcher'
-require './zulip_watcher'
+require './lib/unlocker'
+require './lib/twilio_watcher'
+require './lib/zulip_watcher'
 
 def new_oauth_client
   OAuth2::Client.new(
