@@ -6,7 +6,7 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
-require './lib/unlocker'
+require './lib/unlocker_stub'
 require './lib/twilio_watcher'
 require './lib/zulip_watcher'
 
@@ -48,7 +48,6 @@ end
 
 
 class User < ActiveRecord::Base
-  validates_presence_of :school_id
 end
 
 class DoorbotApp < Sinatra::Base
