@@ -6,6 +6,7 @@ require 'net/http'
 require 'twilio-ruby'
 require 'rack/csrf'
 require 'phone'
+require './lib/greeter'
 require './lib/unlocker'
 require './lib/twilio_watcher'
 require './lib/zulip_watcher'
@@ -45,55 +46,6 @@ def parse_phone_number(num)
     false
   end
 end
-
-def greeting
-  [
-    'Have a wonderful day!',
-    'Hope you have a wonderful day!',
-    'Hope your day goes pleasantly!',
-    'Hope you have a great day!',
-    'Hope your day goes well!',
-    'Hope your day goes as smoothly as your Doorbot experience!',
-    'Have a nice day!',
-    'Have a great day!',
-    'Have an excellent day!',
-    'Have a beautiful day!',
-    'Have a stellar day!',
-    'Have a spectacular day!',
-    'Good day.',
-    '<3',
-    '<3',
-    '<3 <3',
-    '<3 <3 <3',
-    '<3 <3 <3 <3',
-    '<3, Doorbot',
-    'Mathematical!',
-    'Algebraic!',
-    ':D',
-    ':)',
-    'Enjoy!',
-    'Yay!',
-    'Yippie!',
-    'Hazzah!',
-    'Magic!',
-    'Booyah!',
-    "Have a nice #{Time.now.strftime('%A')}!",
-    "Hope you have a nice #{Time.now.strftime('%A')}!",
-    "Hope your #{Time.now.strftime('%A')} goes wonderfully!",
-    "BTW, you're one of my favorite Hacker Schoolers. It's true.",
-    'Never graduate!',
-    'Remember, never graduate!',
-    "Don't forget, never graduate!",
-    "Just remember: never graduate!",
-    "Always graduate! Haha, just kidding. Please don't do that.",
-    'I hope your door-using goes well today!',
-    'May your feet be swift, and your doors be unlocked.',
-    "BTW, did you know a cat's field of vision is about 200 degrees?",
-    "BTW, did you know cats take between 20-40 breaths per minute?",
-    "BTW, did you know cats walk on their toes? Cats are awesome!",
-  ].sample
-end
-
 
 class User < ActiveRecord::Base
 end

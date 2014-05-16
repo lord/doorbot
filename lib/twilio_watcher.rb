@@ -15,7 +15,7 @@ class TwilioWatcher
           user_exists = User.where(phone: sms.from).exists?
           if user_exists and sms.body.downcase.strip =~ Regexp.new(ENV['PASSWORD_REGEX'])
             if @unlocker.unlock
-              msg sms.from, "Door unlocked! #{greeting}"
+              msg sms.from, "Door unlocked! #{Greeter.greet true}"
             else
               msg sms.from, "Door was already unlocked."
             end

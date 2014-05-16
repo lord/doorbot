@@ -20,7 +20,7 @@ class ZulipWatcher
         content = message.content.downcase
         if content =~ /unlock/
           if @unlocker.unlock
-            send_msg "Door unlocked! #{greeting}", message.sender_email
+            send_msg "Door unlocked! #{Greeter.greet}", message.sender_email
           else
             send_msg "Whoops, look like somebody just unlocked the door. Please wait a couple seconds before unlocking it again.", message.sender_email
           end
@@ -36,13 +36,15 @@ class ZulipWatcher
               user = User.find_or_create_by(zulip_email: message.sender_email)
               user.phone = parsed_num
               user.save
-              send_msg "Got it! Your phone number has been set to #{parsed_num}, which can now text '#{ENV['PASSWORD_HUMAN']}' to #{ENV['TWILIO_PHONE_NUMBER_HUMAN']} to unlock the downstairs door. (Note: if you previously set a phone number, it has been overwritten.) #{greeting}", message.sender_email
+              send_msg "Got it! Your phone number has been set to #{parsed_num}, which can now text '#{ENV['PASSWORD_HUMAN']}' to #{ENV['TWILIO_PHONE_NUMBER_HUMAN']} to unlock the downstairs door. (Note: if you previously set a phone number, it has been overwritten.)", message.sender_email
             else
               send_msg "Sorry, I didn't recognize that phone number as a valid. Did you perhaps mistype something?", message.sender_email
             end
           else
             send_status_msg message.sender_email
           end
+        elsif content =~ /love/
+          send_msg "I'm sorry, #{message.sender_short_name}, but as an automated bot, I am incapable of understanding love.", message.sender_email
         else
           send_msg "Sorry, I don't understand. Ask me for `help` if you need a list of commands.", message.sender_email
         end
