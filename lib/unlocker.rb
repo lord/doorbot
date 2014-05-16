@@ -1,4 +1,5 @@
 require 'pi_piper'
+require 'thread'
 
 class Unlocker
   def initialize
@@ -7,9 +8,11 @@ class Unlocker
     @relay = PiPiper::Pin.new(:pin => 4, :direction => :out)
     set_lock
     @thread = Thread.new { start }
+    @mutex = Mutex.new
   end
 
   def unlock(time=8000)
+    @mutex.synchronize {
     if @unlocked == false
       @unlocked = true
       @timer = time
@@ -18,7 +21,10 @@ class Unlocker
     else
       false
     end
+    }
   end
+
+  private
 
   def lock
     set_lock if @unlocked == true
@@ -26,7 +32,6 @@ class Unlocker
     @timer = 0
   end
 
-  private
   def set_unlock
     @relay.on
   end
@@ -37,8 +42,10 @@ class Unlocker
 
   def start
     loop do
+      @mutex.synchronize {
       @timer -= 100 if @timer > 0
       lock if @timer <= 0 && @unlocked == true
+      }
       sleep 0.1
     end
   end
