@@ -22,7 +22,7 @@ class TwilioWatcher
           elsif user_exists
             msg sms.from, "Sorry, incorrect password."
           else
-            msg sms.from, "Sorry, I didn't recognize your phone number."
+            msg sms.from, "Sorry, I don't recognize your phone number."
           end
         end
       end

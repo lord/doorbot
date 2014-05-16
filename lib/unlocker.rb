@@ -4,8 +4,7 @@ class Unlocker
   def initialize
     @timer = 0
     @unlocked = false
-    @relay = PiPiper::Pin.new(:pin => 14, :direction => :out)
-    @light = PiPiper::Pin.new(:pin => 15, :direction => :out)
+    @relay = PiPiper::Pin.new(:pin => 4, :direction => :out)
     set_lock
     @thread = Thread.new { start }
   end
@@ -29,12 +28,10 @@ class Unlocker
 
   private
   def set_unlock
-    @light.on
     @relay.on
   end
 
   def set_lock
-    @light.off
     @relay.off
   end
 
