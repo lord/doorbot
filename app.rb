@@ -4,7 +4,7 @@ require 'twilio-ruby'
 require 'phone'
 require './lib/models'
 require './lib/greeter'
-require './lib/unlocker_stub'
+require './lib/unlocker'
 require './lib/twilio_watcher'
 require './lib/zulip_watcher'
 
