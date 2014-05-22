@@ -1,6 +1,8 @@
 require 'zulip'
 
 class ZulipWatcher
+  attr_reader :thread
+
   def initialize(unlocker)
     @unlocker = unlocker
     @client = ::Zulip::Client.new do |config|
@@ -66,6 +68,15 @@ class ZulipWatcher
       send_msg "Your phone number is set as #{user.first.phone}. Text '#{ENV['PASSWORD_HUMAN']}' to #{ENV['TWILIO_PHONE_NUMBER_HUMAN']} to unlock the downstairs door.", email
     else
       send_msg "It doesn't look like you've set your phone. To unlock via text, you'll need to tell me your mobile number.", email
+    end
+  end
+
+  def parse_phone_number(num)
+    begin
+      Phoner::Phone.default_country_code = '1'
+      Phoner::Phone.parse(num).to_s
+    rescue Phoner::PhoneError
+      false
     end
   end
 end
