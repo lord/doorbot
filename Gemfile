@@ -13,4 +13,3 @@ gem 'pi_piper'
 gem 'phone' # phone number parsing
 
 gem 'sqlite3'
-gem 'tux'
