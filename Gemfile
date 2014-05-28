@@ -4,8 +4,7 @@ source "https://rubygems.org"
 
 gem 'zulip', :github => 'lord/zulip-rb'
 
-# For PG database
-gem "activerecord"
+gem 'activerecord', '~> 4.0.5'
 gem 'twilio-ruby'
 gem 'rake'
 gem 'pi_piper'
