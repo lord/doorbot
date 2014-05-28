@@ -1,3 +1,5 @@
+puts "Doorbot booting..."
+
 require 'active_record'
 require 'json'
 require 'twilio-ruby'
@@ -16,6 +18,8 @@ $unlocker = Unlocker.new
 threads = []
 threads << TwilioWatcher.new($unlocker).thread
 threads << ZulipWatcher.new($unlocker).thread
+
+puts "Doorbot finished booting"
 
 threads.each do |thread|
   thread.join
