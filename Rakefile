@@ -10,7 +10,7 @@ end
 
 ActiveRecord::Tasks::DatabaseTasks.tap do |config|
   config.root                   = Rake.application.original_dir
-  config.env                    = ENV["RACK_ENV"] || "development"
+  config.env                    = "development"
   config.db_dir                 = "db"
   config.migrations_paths       = ["db/migrate"]
   config.fixtures_path          = "test/fixtures"
