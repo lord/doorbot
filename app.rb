@@ -10,10 +10,10 @@ require './lib/unlocker'
 require './lib/twilio_watcher'
 require './lib/zulip_watcher'
 
-$unlocker = Unlocker.new
+unlocker = Unlocker.new
 threads = []
-threads << TwilioWatcher.new($unlocker).thread
-threads << ZulipWatcher.new($unlocker).thread
+threads << TwilioWatcher.new(unlocker).thread
+threads << ZulipWatcher.new(unlocker).thread
 
 puts "Doorbot finished booting"
 
