@@ -1,11 +1,10 @@
 source "https://rubygems.org"
 
-# ruby "2.1.0"
+ruby "2.1.2"
 
 gem 'zulip', :github => 'lord/zulip-rb'
 
-# For PG database
-gem "activerecord"
+gem 'activerecord', '~> 4.1.1'
 gem 'twilio-ruby'
 gem 'rake'
 gem 'pi_piper'
@@ -13,4 +12,3 @@ gem 'pi_piper'
 gem 'phone' # phone number parsing
 
 gem 'sqlite3'
-gem 'tux'

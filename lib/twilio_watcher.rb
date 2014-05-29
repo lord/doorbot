@@ -1,6 +1,6 @@
 class TwilioWatcher
   attr_reader :thread
-  
+
   def initialize(unlocker)
     @unlocker = unlocker
     @client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']

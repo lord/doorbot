@@ -19,3 +19,5 @@ set_secrets.sh
 .yardoc
 _yardoc
 doc/
+
+run.sh
